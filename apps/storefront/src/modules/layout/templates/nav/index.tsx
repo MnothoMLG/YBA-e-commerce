@@ -20,14 +20,28 @@ const rightLinks = [
   { label: "Manifesto", href: "/" },
 ]
 
-export default async function Nav() {
+export default async function Nav({
+  countryCode,
+}: {
+  countryCode?: string
+}) {
   const [regions, locales, currentLocale] = await Promise.all([
     listRegions().then((regions: StoreRegion[]) => regions),
     listLocales(),
     getLocale(),
   ])
 
-  const currency = regions?.[0]?.currency_code?.toUpperCase() ?? "USD"
+  // Reflect the currency of the region the visitor is browsing
+  const currentRegion = countryCode
+    ? regions?.find((r) =>
+        r.countries?.some((c) => c.iso_2 === countryCode.toLowerCase())
+      )
+    : undefined
+  const currency = (
+    currentRegion?.currency_code ??
+    regions?.[0]?.currency_code ??
+    "usd"
+  ).toUpperCase()
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">

@@ -1,26 +1,39 @@
 import { getBaseURL } from "@lib/util/env"
 import { Metadata } from "next"
-import { Archivo, Archivo_Black, Space_Mono } from "next/font/google"
+import localFont from "next/font/local"
 import "styles/globals.css"
 
-const archivo = Archivo({
-  subsets: ["latin"],
+// Self-hosted fonts (no build-time network dependency)
+const archivo = localFont({
   variable: "--font-sans",
   display: "swap",
+  src: [
+    { path: "../../public/fonts/archivo-400.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/archivo-500.woff2", weight: "500", style: "normal" },
+    { path: "../../public/fonts/archivo-600.woff2", weight: "600", style: "normal" },
+    { path: "../../public/fonts/archivo-700.woff2", weight: "700", style: "normal" },
+  ],
 })
 
-const archivoBlack = Archivo_Black({
-  subsets: ["latin"],
-  weight: "400",
+const archivoBlack = localFont({
   variable: "--font-display",
   display: "swap",
+  src: [
+    {
+      path: "../../public/fonts/archivo-black.woff2",
+      weight: "400",
+      style: "normal",
+    },
+  ],
 })
 
-const spaceMono = Space_Mono({
-  subsets: ["latin"],
-  weight: ["400", "700"],
+const spaceMono = localFont({
   variable: "--font-mono",
   display: "swap",
+  src: [
+    { path: "../../public/fonts/space-mono-400.woff2", weight: "400", style: "normal" },
+    { path: "../../public/fonts/space-mono-700.woff2", weight: "700", style: "normal" },
+  ],
 })
 
 export const metadata: Metadata = {
