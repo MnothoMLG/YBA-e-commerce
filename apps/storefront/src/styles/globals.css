@@ -2,6 +2,54 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* ==========================================================================
+   YBA — brand design tokens
+   Minimal / premium: warm paper canvas, near-black ink, mono labels.
+   ========================================================================== */
+:root {
+  --yba-paper: #f4f0e8; /* warm cream canvas */
+  --yba-paper-2: #ece6db; /* deeper section band */
+  --yba-ink: #0e0e0e; /* near-black text */
+  --yba-ink-2: #5c5951; /* secondary / body copy */
+  --yba-line: rgba(14, 14, 14, 0.14); /* hairline borders */
+  --yba-accent: #c8102e; /* racing red — used sparingly */
+}
+
+@layer base {
+  html {
+    background-color: var(--yba-paper);
+  }
+  body {
+    background-color: var(--yba-paper);
+    color: var(--yba-ink);
+    font-family: var(--font-sans), "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--yba-ink);
+    color: var(--yba-paper);
+  }
+}
+
+@layer components {
+  /* Monospace eyebrow / label — e.g. "01 — ORIGINS", SKU codes, categories */
+  .yba-eyebrow {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    @apply text-[11px] leading-none uppercase tracking-[0.18em];
+    color: var(--yba-ink-2);
+  }
+  /* Heavy display headline — ALL CAPS, tight */
+  .yba-display {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    @apply uppercase tracking-[-0.02em] leading-[0.92];
+    color: var(--yba-ink);
+  }
+  .yba-hairline {
+    border-color: var(--yba-line);
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

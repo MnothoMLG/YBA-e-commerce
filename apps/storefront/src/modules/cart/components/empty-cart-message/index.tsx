@@ -7,11 +7,11 @@ const EmptyCartMessage = () => {
     <div className="py-48 px-2 flex flex-col justify-center items-start" data-testid="empty-cart-message">
       <Heading
         level="h1"
-        className="flex flex-row text-3xl-regular gap-x-2 items-baseline"
+        className="yba-display text-6xl gap-x-2 items-baseline"
       >
-        Cart
+        Your Bag
       </Heading>
-      <Text className="text-base-regular mt-4 mb-6 max-w-[32rem]">
+      <Text className="text-base text-yba-muted mt-6 mb-8 max-w-[32rem] leading-relaxed">
         You don&apos;t have anything in your cart. Let&apos;s change that, use
         the link below to start browsing our products.
       </Text>

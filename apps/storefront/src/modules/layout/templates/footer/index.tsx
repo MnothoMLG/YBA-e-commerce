@@ -1,104 +1,62 @@
-import { listCategories } from "@lib/data/categories";
-import { listCollections } from "@lib/data/collections";
-import { Text, clx } from "@modules/common/components/ui";
+import { listCategories } from "@lib/data/categories"
+import { listCollections } from "@lib/data/collections"
 
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
-import MedusaCTA from "@modules/layout/components/medusa-cta";
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export default async function Footer() {
   const { collections } = await listCollections({
     fields: "*products",
-  });
-  const productCategories = await listCategories();
+  })
+  const productCategories = await listCategories()
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
+    <footer className="border-t border-yba-line w-full bg-yba-paper">
       <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
+        {/* Top — wordmark + link columns */}
+        <div className="flex flex-col gap-y-16 small:flex-row items-start justify-between pt-20 pb-16">
+          <div className="flex flex-col gap-y-4">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+              className="font-display text-6xl leading-none tracking-[0.12em] text-yba-ink"
             >
-              Medusa Store
+              YBA
             </LocalizedClientLink>
+            <p className="yba-eyebrow max-w-[16rem] !tracking-[0.14em] leading-relaxed">
+              A minimal wardrobe for the road ahead.
+            </p>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return;
-                    }
 
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null;
-
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-14 gap-y-10">
+            {productCategories && productCategories.length > 0 && (
+              <div className="flex flex-col gap-y-4">
+                <span className="yba-eyebrow">Shop</span>
+                <ul className="flex flex-col gap-y-3" data-testid="footer-categories">
+                  {productCategories
+                    .filter((c) => !c.parent_category)
+                    .slice(0, 6)
+                    .map((c) => (
+                      <li key={c.id}>
                         <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
+                          className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
                           href={`/categories/${c.handle}`}
                           data-testid="category-link"
                         >
                           {c.name}
                         </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
                       </li>
-                    );
-                  })}
+                    ))}
                 </ul>
               </div>
             )}
+
             {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
-                >
-                  {collections?.slice(0, 6).map((c) => (
+              <div className="flex flex-col gap-y-4">
+                <span className="yba-eyebrow">Collections</span>
+                <ul className="flex flex-col gap-y-3">
+                  {collections.slice(0, 6).map((c) => (
                     <li key={c.id}>
                       <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
+                        className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
                         href={`/collections/${c.handle}`}
                       >
                         {c.title}
@@ -108,50 +66,47 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+
+            <div className="flex flex-col gap-y-4">
+              <span className="yba-eyebrow">Info</span>
+              <ul className="flex flex-col gap-y-3">
                 <li>
-                  <a
-                    href="https://github.com/medusajs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
+                  <LocalizedClientLink
+                    href="/store"
+                    className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
                   >
-                    GitHub
-                  </a>
+                    Stores
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="https://docs.medusajs.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
+                  <LocalizedClientLink
+                    href="/account"
+                    className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
                   >
-                    Documentation
-                  </a>
+                    Account
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="https://github.com/medusajs/dtc-starter"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
+                  <LocalizedClientLink
+                    href="/"
+                    className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
                   >
-                    Source code
-                  </a>
+                    Manifesto
+                  </LocalizedClientLink>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
-          </Text>
-          <MedusaCTA />
+
+        {/* Bottom bar */}
+        <div className="flex flex-col gap-y-3 small:flex-row w-full mb-10 pt-8 border-t border-yba-line justify-between items-start small:items-center">
+          <span className="yba-eyebrow">
+            © {new Date().getFullYear()} YBA — All rights reserved
+          </span>
+          <span className="yba-eyebrow">Designed in South Africa</span>
         </div>
       </div>
     </footer>
-  );
+  )
 }
