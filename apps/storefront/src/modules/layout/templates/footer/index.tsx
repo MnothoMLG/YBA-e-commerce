@@ -1,111 +1,59 @@
 import { listCategories } from "@lib/data/categories"
 import { listCollections } from "@lib/data/collections"
-
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import YbaLogo from "@modules/common/components/yba-logo"
 
 export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  })
-  const productCategories = await listCategories()
+  const [{ collections }, productCategories] = await Promise.all([
+    listCollections({ fields: "id,title,handle" }),
+    listCategories(),
+  ])
 
   return (
-    <footer className="border-t border-yba-line w-full bg-yba-paper">
-      <div className="content-container flex flex-col w-full">
-        {/* Top — wordmark + link columns */}
-        <div className="flex flex-col gap-y-16 small:flex-row items-start justify-between pt-20 pb-16">
-          <div className="flex flex-col gap-y-4">
-            <LocalizedClientLink
-              href="/"
-              className="font-display text-6xl leading-none tracking-[0.12em] text-yba-ink"
-            >
-              YBA
-            </LocalizedClientLink>
-            <p className="yba-eyebrow max-w-[16rem] !tracking-[0.14em] leading-relaxed">
-              A minimal wardrobe for the road ahead.
-            </p>
-          </div>
+    <footer className="bg-black text-white">
+      <section className="grid gap-10 border-b border-white/20 px-6 py-20 small:grid-cols-2 small:px-12 small:py-28">
+        <div>
+          <span className="font-mono text-xs uppercase tracking-[0.28em] text-white/60">&quot;Enlist&quot;</span>
+          <h2 className="mt-4 max-w-2xl font-display text-[clamp(3.5rem,7vw,7rem)] uppercase leading-[0.85]">Join the paddock.</h2>
+          <p className="mt-6 max-w-xl text-lg text-white/60">Early access to drops, campaign previews and paddock stories. No spam.</p>
+        </div>
+        <div className="flex items-center small:justify-end">
+          <LocalizedClientLink href="/account" className="border border-white bg-white px-8 py-5 font-mono text-xs uppercase tracking-[0.25em] text-black transition-colors hover:bg-black hover:text-white">
+            Create an account
+          </LocalizedClientLink>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-14 gap-y-10">
-            {productCategories && productCategories.length > 0 && (
-              <div className="flex flex-col gap-y-4">
-                <span className="yba-eyebrow">Shop</span>
-                <ul className="flex flex-col gap-y-3" data-testid="footer-categories">
-                  {productCategories
-                    .filter((c) => !c.parent_category)
-                    .slice(0, 6)
-                    .map((c) => (
-                      <li key={c.id}>
-                        <LocalizedClientLink
-                          className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            )}
-
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-4">
-                <span className="yba-eyebrow">Collections</span>
-                <ul className="flex flex-col gap-y-3">
-                  {collections.slice(0, 6).map((c) => (
-                    <li key={c.id}>
-                      <LocalizedClientLink
-                        className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
-                        href={`/collections/${c.handle}`}
-                      >
-                        {c.title}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="flex flex-col gap-y-4">
-              <span className="yba-eyebrow">Info</span>
-              <ul className="flex flex-col gap-y-3">
-                <li>
-                  <LocalizedClientLink
-                    href="/store"
-                    className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
-                  >
-                    Stores
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/account"
-                    className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
-                  >
-                    Account
-                  </LocalizedClientLink>
-                </li>
-                <li>
-                  <LocalizedClientLink
-                    href="/"
-                    className="text-sm text-yba-ink hover:opacity-60 transition-opacity"
-                  >
-                    Manifesto
-                  </LocalizedClientLink>
-                </li>
-              </ul>
-            </div>
+      <section className="grid gap-14 border-b border-white/20 px-6 py-16 small:grid-cols-[2fr_1fr_1fr] small:px-12 small:py-24">
+        <div>
+          <YbaLogo className="h-20 w-auto invert" />
+          <p className="mt-10 max-w-lg font-serif text-3xl italic leading-snug">“Made for the originals. The young, cool kings and queens who are not afraid to make a statement.”</p>
+          <div className="mt-10 flex gap-7 font-mono text-xs uppercase tracking-[0.2em] text-white/60">
+            <span>Instagram</span><span>TikTok</span><span>Twitter</span>
           </div>
         </div>
-
-        {/* Bottom bar */}
-        <div className="flex flex-col gap-y-3 small:flex-row w-full mb-10 pt-8 border-t border-yba-line justify-between items-start small:items-center">
-          <span className="yba-eyebrow">
-            © {new Date().getFullYear()} YBA — All rights reserved
-          </span>
-          <span className="yba-eyebrow">Designed in South Africa</span>
+        <div>
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Shop</span>
+          <ul className="mt-7 space-y-4 font-mono text-sm uppercase tracking-[0.18em]">
+            <li><LocalizedClientLink href="/store">All pieces</LocalizedClientLink></li>
+            {productCategories?.filter((category) => !category.parent_category).slice(0, 3).map((category) => (
+              <li key={category.id}><LocalizedClientLink href={`/categories/${category.handle}`}>{category.name}</LocalizedClientLink></li>
+            ))}
+          </ul>
         </div>
+        <div>
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Collections</span>
+          <ul className="mt-7 space-y-4 font-mono text-sm uppercase tracking-[0.18em]">
+            {collections?.slice(0, 4).map((collection) => (
+              <li key={collection.id}><LocalizedClientLink href={`/collections/${collection.handle}`}>{collection.title}</LocalizedClientLink></li>
+            ))}
+            <li><LocalizedClientLink href="/account">Account</LocalizedClientLink></li>
+          </ul>
+        </div>
+      </section>
+      <div className="flex flex-col gap-3 px-6 py-7 font-mono text-[10px] uppercase tracking-[0.24em] text-white/60 small:flex-row small:justify-between small:px-12">
+        <span>© {new Date().getFullYear()} Yung Blood Apparel</span>
+        <span>Johannesburg, South Africa</span>
       </div>
     </footer>
   )

@@ -2,22 +2,31 @@
 
 import { Popover, PopoverPanel, Transition } from "@headlessui/react"
 import useToggleState from "@lib/hooks/use-toggle-state"
-import { ArrowRightMini, XMark } from "@medusajs/icons"
+import {
+  ArrowRightMini,
+  BarsThree,
+  House,
+  ShoppingBag,
+  ShoppingCart,
+  User,
+  XMark,
+} from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import { Text, clx } from "@modules/common/components/ui"
 import { Fragment } from "react"
+import YbaLogo from "@modules/common/components/yba-logo"
 import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
 import { Locale } from "@lib/data/locales"
 
 
-const SideMenuItems = {
-  Home: "/",
-  Store: "/store",
-  Account: "/account",
-  Cart: "/cart",
-}
+const sideMenuItems = [
+  { name: "Home", href: "/", icon: House },
+  { name: "Store", href: "/store", icon: ShoppingBag },
+  { name: "Account", href: "/account", icon: User },
+  { name: "Cart", href: "/cart", icon: ShoppingCart },
+]
 
 type SideMenuProps = {
   regions: HttpTypes.StoreRegion[] | null
@@ -38,15 +47,16 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
               <div className="relative flex h-full">
                 <Popover.Button
                   data-testid="nav-menu-button"
-                  className="relative h-full flex items-center transition-all ease-out duration-200 focus:outline-none hover:text-ui-fg-base"
+                  aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+                  className="my-2 inline-flex min-h-11 items-center text-black transition-opacity hover:opacity-60 focus:outline-none"
                 >
-                  Menu
+                  <BarsThree className="h-8 w-8" aria-hidden="true" />
                 </Popover.Button>
               </div>
 
               {open && (
                 <div
-                  className="fixed inset-0 z-[50] bg-black/0 pointer-events-auto"
+                  className="fixed inset-0 z-[50] bg-black/70 pointer-events-auto"
                   onClick={close}
                   data-testid="side-menu-backdrop"
                 />
@@ -62,36 +72,46 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                 leaveFrom="opacity-100 backdrop-blur-2xl"
                 leaveTo="opacity-0"
               >
-                <PopoverPanel className="flex flex-col absolute w-full pr-4 sm:pr-0 sm:w-1/3 2xl:w-1/4 sm:min-w-min h-[calc(100vh-1rem)] z-[51] inset-x-0 text-sm text-ui-fg-on-color m-2 backdrop-blur-2xl">
+                <PopoverPanel className="fixed inset-y-0 left-0 z-[51] flex w-[min(92vw,28rem)] flex-col text-sm text-white shadow-2xl">
                   <div
                     data-testid="nav-menu-popup"
-                    className="flex flex-col h-full bg-[rgba(3,7,18,0.5)] rounded-rounded justify-between p-6"
+                    className="flex h-full flex-col justify-between border-r-2 border-white bg-black p-6 small:p-8"
                   >
-                    <div className="flex justify-end" id="xmark">
-                      <button data-testid="close-menu-button" onClick={close}>
-                        <XMark />
+                    <div className="flex items-center justify-between border-b border-white pb-5" id="xmark">
+                      <YbaLogo className="h-12 w-auto invert" />
+                      <button
+                        data-testid="close-menu-button"
+                        onClick={close}
+                        aria-label="Close navigation menu"
+                        className="inline-flex h-11 w-11 items-center justify-center border-2 border-white transition-colors hover:bg-white hover:text-black"
+                      >
+                        <XMark className="h-6 w-6" />
                       </button>
                     </div>
-                    <ul className="flex flex-col gap-6 items-start justify-start">
-                      {Object.entries(SideMenuItems).map(([name, href]) => {
+                    <ul className="flex flex-col items-stretch">
+                      {sideMenuItems.map(({ name, href, icon: Icon }) => {
                         return (
-                          <li key={name}>
+                          <li key={name} className="border-b border-white">
                             <LocalizedClientLink
                               href={href}
-                              className="text-3xl leading-10 hover:text-ui-fg-disabled"
+                              className="group flex items-center justify-between py-5 text-2xl font-semibold uppercase tracking-tight transition-colors hover:bg-white hover:text-black"
                               onClick={close}
                               data-testid={`${name.toLowerCase()}-link`}
                             >
-                              {name}
+                              <span className="flex items-center gap-x-4">
+                                <Icon className="h-6 w-6" aria-hidden="true" />
+                                {name}
+                              </span>
+                              <ArrowRightMini className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                             </LocalizedClientLink>
                           </li>
                         )
                       })}
                     </ul>
-                    <div className="flex flex-col gap-y-6">
+                    <div className="flex flex-col gap-y-5 border-t border-white pt-5">
                       {!!locales?.length && (
                         <div
-                          className="flex justify-between"
+                            className="flex justify-between border-b border-white pb-4"
                           onMouseEnter={languageToggleState.open}
                           onMouseLeave={languageToggleState.close}
                         >
@@ -109,7 +129,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         </div>
                       )}
                       <div
-                        className="flex justify-between"
+                        className="flex justify-between border-b border-white pb-4"
                         onMouseEnter={countryToggleState.open}
                         onMouseLeave={countryToggleState.close}
                       >
@@ -126,8 +146,8 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           )}
                         />
                       </div>
-                      <Text className="flex justify-between txt-compact-small">
-                        © {new Date().getFullYear()} Medusa Store. All rights
+                      <Text className="flex justify-between font-mono text-xs uppercase tracking-wider">
+                        © {new Date().getFullYear()} YBA. All rights
                         reserved.
                       </Text>
                     </div>

@@ -1,44 +1,44 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
-const Hero = () => {
+const Hero = ({ image }: { image?: string | null }) => {
   return (
-    <section className="w-full border-b border-yba-line bg-yba-paper">
-      <div className="content-container py-20 small:py-28">
-        {/* eyebrow */}
-        <span className="yba-eyebrow">&quot;01 — The Label&quot;</span>
-
-        <div className="mt-6 grid grid-cols-1 gap-y-10 small:grid-cols-12 small:gap-x-10 items-end">
-          {/* Headline */}
-          <div className="small:col-span-7 small:pr-4">
-            <h1 className="yba-display text-[clamp(3.25rem,10vw,7.25rem)] leading-[0.86]">
-              Built
-              <br />
-              for the Road
-            </h1>
-          </div>
-
-          {/* Editorial column */}
-          <div className="small:col-span-5 small:pb-3">
-            <p className="text-base text-yba-muted leading-relaxed max-w-md">
-              Precision-cut essentials built for movement. A restrained
-              palette, considered proportions, and materials chosen to last —
-              menswear and womenswear made to be worn every day.
-            </p>
-            <LocalizedClientLink
-              href="/store"
-              className="group mt-8 inline-flex items-center gap-x-3 border border-yba-ink px-6 py-3 hover:bg-yba-ink hover:text-yba-paper transition-colors duration-200"
+    <>
+      <section
+        className="relative flex min-h-[72vh] items-end overflow-hidden border-b border-yba-line bg-neutral-900 bg-cover bg-center small:min-h-[calc(100vh-7.5rem)]"
+        style={image ? { backgroundImage: `url(${image})` } : undefined}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-black/10" />
+        <div className="content-container relative z-10 flex flex-col items-center pb-12 text-center small:pb-16">
+          <LocalizedClientLink
+            href="/store"
+            className="bg-white px-10 py-5 font-sans text-sm font-bold uppercase tracking-[0.04em] text-black transition-colors hover:bg-black hover:text-white small:px-16"
+          >
+            Shop now
+          </LocalizedClientLink>
+          <span className="mt-5 bg-black/60 px-5 py-2 font-mono text-[10px] uppercase tracking-[0.28em] text-white backdrop-blur-sm small:text-xs">
+            SS26 · Release [00.41_Kyalami]
+          </span>
+        </div>
+      </section>
+      <div className="overflow-hidden bg-black py-5 text-white">
+        <div
+          className="yba-marquee flex w-max"
+          aria-label="Yung Blood Apparel campaign announcement"
+        >
+          {[0, 1].map((copy) => (
+            <p
+              key={copy}
+              className="shrink-0 whitespace-nowrap pr-16 font-mono text-[10px] uppercase tracking-[0.28em] small:text-xs"
+              aria-hidden={copy === 1}
             >
-              <span className="yba-eyebrow !text-current">
-                Shop the Collection
-              </span>
-              <span className="transition-transform duration-200 group-hover:translate-x-1">
-                →
-              </span>
-            </LocalizedClientLink>
-          </div>
+              ◆ &nbsp; Yung Blood Apparel — Kyalami SS26 — From the circuit to
+              the streets — Est. Johannesburg &nbsp; ◆ &nbsp; Yung Blood Apparel
+              — Kyalami SS26
+            </p>
+          ))}
         </div>
       </div>
-    </section>
+    </>
   )
 }
 

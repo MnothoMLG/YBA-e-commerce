@@ -38,6 +38,12 @@ const spaceMono = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseURL()),
+  title: {
+    default: "YBA",
+    template: "%s | YBA",
+  },
+  description:
+    "YBA. Precision-cut menswear and womenswear essentials. Built for the road.",
 }
 
 export default function RootLayout(props: { children: React.ReactNode }) {

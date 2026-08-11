@@ -1,6 +1,6 @@
 "use client"
 
-import { isManual, isStripeLike } from "@lib/constants"
+import { isManual, isPaystack, isStripeLike } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
@@ -39,9 +39,68 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
       return (
         <ManualTestPaymentButton notReady={notReady} data-testid={dataTestId} />
       )
+    case isPaystack(paymentSession?.provider_id):
+      return (
+        <PaystackPaymentButton
+          notReady={notReady}
+          cart={cart}
+          data-testid={dataTestId}
+        />
+      )
     default:
       return <Button disabled>Select a payment method</Button>
   }
+}
+
+const PaystackPaymentButton = ({
+  cart,
+  notReady,
+  "data-testid": dataTestId,
+}: {
+  cart: HttpTypes.StoreCart
+  notReady: boolean
+  "data-testid"?: string
+}) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const session = cart.payment_collection?.payment_sessions?.find(
+    (s) => s.status === "pending"
+  )
+  const authorizationUrl = (session?.data as Record<string, unknown>)
+    ?.paystackTxAuthorizationUrl as string | undefined
+
+  const handlePayment = () => {
+    if (!authorizationUrl) {
+      setErrorMessage(
+        "Could not start the Paystack payment. Go back and re-select Paystack."
+      )
+      return
+    }
+    setSubmitting(true)
+    // Redirect to Paystack's hosted checkout. After payment, Paystack returns
+    // the customer to the callback URL configured in the Paystack dashboard,
+    // where the order is completed (payment is verified server-side).
+    window.location.href = authorizationUrl
+  }
+
+  return (
+    <>
+      <Button
+        disabled={notReady || !authorizationUrl}
+        isLoading={submitting}
+        onClick={handlePayment}
+        size="large"
+        data-testid={dataTestId}
+      >
+        Pay with Paystack
+      </Button>
+      <ErrorMessage
+        error={errorMessage}
+        data-testid="paystack-payment-error-message"
+      />
+    </>
+  )
 }
 
 const StripePaymentButton = ({

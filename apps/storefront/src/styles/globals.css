@@ -3,16 +3,15 @@
 @import "tailwindcss/utilities";
 
 /* ==========================================================================
-   YBA — brand design tokens
-   Minimal / premium: warm paper canvas, near-black ink, mono labels.
+   YBA — black and white design tokens
    ========================================================================== */
 :root {
-  --yba-paper: #f4f0e8; /* warm cream canvas */
-  --yba-paper-2: #ece6db; /* deeper section band */
-  --yba-ink: #0e0e0e; /* near-black text */
-  --yba-ink-2: #5c5951; /* secondary / body copy */
-  --yba-line: rgba(14, 14, 14, 0.14); /* hairline borders */
-  --yba-accent: #c8102e; /* racing red — used sparingly */
+  --yba-paper: #f7f5f1;
+  --yba-paper-2: #fffffe;
+  --yba-ink: #000000;
+  --yba-ink-2: #000000;
+  --yba-line: #000000;
+  --yba-accent: #000000;
 }
 
 @layer base {
@@ -25,6 +24,10 @@
     font-family: var(--font-sans), "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid #000000;
+    outline-offset: 3px;
   }
   ::selection {
     background: var(--yba-ink);
@@ -47,6 +50,26 @@
   }
   .yba-hairline {
     border-color: var(--yba-line);
+  }
+
+  .yba-marquee {
+    animation: yba-marquee 24s linear infinite;
+    will-change: transform;
+  }
+}
+
+@keyframes yba-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yba-marquee {
+    animation-play-state: paused;
   }
 }
 
@@ -83,8 +106,8 @@
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    border: 1px solid #212121;
-    -webkit-text-fill-color: #212121;
+    border: 1px solid #000000;
+    -webkit-text-fill-color: #000000;
     -webkit-box-shadow: 0 0 0px 1000px #fff inset;
     transition: background-color 5000s ease-in-out 0s;
   }
@@ -99,7 +122,7 @@
 
 @layer components {
   .content-container {
-    @apply max-w-[1440px] w-full mx-auto px-6;
+    @apply max-w-[1600px] w-full mx-auto px-5 small:px-12;
   }
 
   .contrast-btn {

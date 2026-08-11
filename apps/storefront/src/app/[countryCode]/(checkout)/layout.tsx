@@ -1,6 +1,7 @@
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import ChevronDown from "@modules/common/icons/chevron-down"
 import MedusaCTA from "@modules/layout/components/medusa-cta"
+import YbaLogo from "@modules/common/components/yba-logo"
 
 export default function CheckoutLayout({
   children,
@@ -26,10 +27,11 @@ export default function CheckoutLayout({
           </LocalizedClientLink>
           <LocalizedClientLink
             href="/"
-            className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+            className="hover:opacity-70 transition-opacity"
             data-testid="store-link"
+            aria-label="YBA home"
           >
-            Medusa Store
+            <YbaLogo className="h-10 w-auto" priority />
           </LocalizedClientLink>
           <div className="flex-1 basis-0" />
         </nav>
