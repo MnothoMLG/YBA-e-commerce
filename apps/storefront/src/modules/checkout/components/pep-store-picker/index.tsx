@@ -102,7 +102,7 @@ const PepStorePicker: React.FC<Props> = ({ cart, onSelect }) => {
 
       {!loading && stores.length > 0 && (
         <RadioGroup
-          value={selectedId}
+          value={selectedId ?? undefined}
           onChange={(placeId: string) => {
             const store = stores.find((s) => s.place_id === placeId)
             if (store) choose(store)

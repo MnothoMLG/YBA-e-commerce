@@ -6,7 +6,7 @@
    YBA — black and white design tokens
    ========================================================================== */
 :root {
-  --yba-paper: #f7f5f1;
+  --yba-paper: #fff;
   --yba-paper-2: #fffffe;
   --yba-ink: #000000;
   --yba-ink-2: #000000;
@@ -55,6 +55,19 @@
   .yba-marquee {
     animation: yba-marquee 24s linear infinite;
     will-change: transform;
+  }
+
+  .yba-editorial-link {
+    @apply items-center border-b border-black pb-2 font-mono text-xs uppercase tracking-[0.22em];
+  }
+
+  .yba-campaign-image {
+    transition: transform 900ms cubic-bezier(0.2, 0.7, 0, 1), filter 900ms ease;
+  }
+
+  .group:hover .yba-campaign-image {
+    transform: scale(1.045);
+    filter: contrast(1.04) saturate(1.05);
   }
 }
 
