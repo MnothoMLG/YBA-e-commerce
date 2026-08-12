@@ -1,6 +1,6 @@
 "use client"
 import { RadioGroup } from "@headlessui/react"
-import { isStripeLike, paymentInfoMap } from "@lib/constants"
+import { isPaystack, isStripeLike, paymentInfoMap } from "@lib/constants"
 import { initiatePaymentSession } from "@lib/data/cart"
 import { CheckCircleSolid, CreditCard } from "@medusajs/icons"
 import ErrorMessage from "@modules/checkout/components/error-message"
@@ -89,6 +89,10 @@ const Payment = ({
       if (!checkActiveSession) {
         await initiatePaymentSession(cart, {
           provider_id: selectedPaymentMethod,
+          // Paystack requires the customer email to initialise the transaction
+          ...(isPaystack(selectedPaymentMethod)
+            ? { data: { email: cart.email } }
+            : {}),
         })
       }
 

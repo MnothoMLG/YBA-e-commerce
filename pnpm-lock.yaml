@@ -60,12 +60,18 @@ importers:
       '@tanstack/react-query':
         specifier: 5.64.2
         version: 5.64.2(react@18.3.1)
+      medusa-payment-paystack:
+        specifier: ^2.1.1
+        version: 2.1.1(@medusajs/framework@2.18.0(@medusajs/cli@2.18.0(@types/node@20.19.26))(@types/node@20.19.26)(ioredis@5.8.2)(vite@5.4.21(@types/node@20.19.26)(terser@5.44.1))(zod@4.2.0))
       react-i18next:
         specifier: 13.5.0
         version: 13.5.0(i18next@23.7.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-router-dom:
         specifier: 6.30.4
         version: 6.30.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      resend:
+        specifier: ^6.19.0
+        version: 6.19.0
       zod:
         specifier: 4.2.0
         version: 4.2.0
@@ -3781,6 +3787,9 @@ packages:
   '@so-ric/colorspace@1.1.6':
     resolution: {integrity: sha512-/KiKkpHNOBgkFJwu9sh48LkHSMYGyuTcSFK/qMBdnOAlrRJzRSXAOFB5qwzaVQuDl8wAvHVMkaASQDReTahxuw==}
 
+  '@stablelib/base64@1.0.1':
+    resolution: {integrity: sha512-1bnPQqSxSuc3Ii6MhBysoWCg58j97aUjuCSZrGSmDxNqtytIi0k8utUenAwTZN4V5mXXYGsVUI9zeBqy+jBOSQ==}
+
   '@stripe/react-stripe-js@5.4.1':
     resolution: {integrity: sha512-ipeYcAHa4EPmjwfv0lFE+YDVkOQ0TMKkFWamW+BqmnSkEln/hO8rmxGPPWcd9WjqABx6Ro8Xg4pAS7evCcR9cw==}
     peerDependencies:
@@ -4513,6 +4522,11 @@ packages:
   axios-retry@3.9.1:
     resolution: {integrity: sha512-8PJDLJv7qTTMMwdnbMvrLYuvB47M81wRtxQmEdV5w4rgbTXTt+vtPkXwajOfOdSyv/wZICJOC+/UhXH4aQ/R+w==}
 
+  axios-retry@4.5.0:
+    resolution: {integrity: sha512-aR99oXhpEDGo0UuAlYcn2iGRds30k366Zfa05XWScR9QaQD4JYiP3/1Qt1u7YlefUOK+cn0CcwoL1oefavQUlQ==}
+    peerDependencies:
+      axios: 0.x || 1.x
+
   axios@1.13.2:
     resolution: {integrity: sha512-VPk9ebNqPcy5lRGuSlKx752IlDatOjT9paPlm8A7yOuW2Fbvp4X3JznJtT4f0GzGLLiWE9W8onz51SqLYwzGaA==}
 
@@ -4909,6 +4923,7 @@ packages:
   cron-parser@4.9.0:
     resolution: {integrity: sha512-p0SaNjrHOnQeR8/VnfGbmg9te2kfyYSQ7Sc/j/6DtPL3JQvKxmjO9TSjNFpujqV3vEYYBvNNvXSxzyksBWAx1Q==}
     engines: {node: '>=12.0.0'}
+    deprecated: v4 is no longer maintained, upgrade to v5
 
   cross-fetch@3.2.0:
     resolution: {integrity: sha512-Q+xVJLoGOeIMXZmbUK4HYk+69cQH6LudR0Vu/pRm2YlU/hDV9CiS0gKUMaWY5f2NeUH9C1nV3bsTlCo0FsTV1Q==}
@@ -5400,6 +5415,9 @@ packages:
 
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
+
+  fast-sha256@1.3.0:
+    resolution: {integrity: sha512-n11RGP/lrWEFI/bWdygLxhI+pVeo1ZYIVwvvPkW7azl/rOy+F3HYRZ2K5zeE9mmkhQppyv9sQFx0JM9UabnpPQ==}
 
   fast-uri@3.1.0:
     resolution: {integrity: sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==}
@@ -6452,6 +6470,11 @@ packages:
     resolution: {integrity: sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==}
     engines: {node: '>= 0.6'}
 
+  medusa-payment-paystack@2.1.1:
+    resolution: {integrity: sha512-ygbmxZjLMndVd+HOmrx/hutF3J7YN5h4arQMxY0qu/+EYrjC7zUSDlnYVoP7XZ718o9AGb7GdD+iP2XZybgiYA==}
+    peerDependencies:
+      '@medusajs/framework': ^2.8.5
+
   merge-descriptors@1.0.3:
     resolution: {integrity: sha512-gaNvAS7TZ897/rVaZ0nMtAyxNyi/pdbjbAwUpFQpN70GqnVfOiXpeUUMKRBmzXaSQ8DdTX4/0ms62r2K+hE6mQ==}
 
@@ -6943,6 +6966,9 @@ packages:
     resolution: {integrity: sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg==}
     engines: {node: '>= 0.4'}
 
+  postal-mime@2.7.5:
+    resolution: {integrity: sha512-GNEXKvWFQnbgO5NlrGzVa0FmWzBZ24PersAWErttSg1Hjpf0ATxTwS5DOMGaOpTG6bUh5cTr7xi0jAD942wCJA==}
+
   postcss-import@15.1.0:
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
@@ -7334,6 +7360,15 @@ packages:
   require-main-filename@2.0.0:
     resolution: {integrity: sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==}
 
+  resend@6.19.0:
+    resolution: {integrity: sha512-JnEdYnd9WyBDIzunsEZtUF8n3cBKM9SlmySaos/7wwi4sEXKG1Zz4M64VFAyk+278erX01Fq2wHQ3p7OIdPriA==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@react-email/render': '*'
+    peerDependenciesMeta:
+      '@react-email/render':
+        optional: true
+
   resolve-cwd@3.0.0:
     resolution: {integrity: sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==}
     engines: {node: '>=8'}
@@ -7603,6 +7638,9 @@ packages:
 
   standard-as-callback@2.1.0:
     resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
+
+  standardwebhooks@1.0.0:
+    resolution: {integrity: sha512-BbHGOQK9olHPMvQNHWul6MYlrRTAOKn03rOe4A8O3CLWhNf4YHBqq2HJKKC+sfqpxiBY52pNeesD6jIiLDz8jg==}
 
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
@@ -13073,6 +13111,8 @@ snapshots:
       color: 5.0.3
       text-hex: 1.0.0
 
+  '@stablelib/base64@1.0.1': {}
+
   '@stripe/react-stripe-js@5.4.1(@stripe/stripe-js@8.5.3)(react-dom@19.0.5(react@19.0.5))(react@19.0.5)':
     dependencies:
       '@stripe/stripe-js': 8.5.3
@@ -13906,6 +13946,11 @@ snapshots:
   axios-retry@3.9.1:
     dependencies:
       '@babel/runtime': 7.28.4
+      is-retry-allowed: 2.2.0
+
+  axios-retry@4.5.0(axios@1.13.2):
+    dependencies:
+      axios: 1.13.2
       is-retry-allowed: 2.2.0
 
   axios@1.13.2:
@@ -15060,6 +15105,8 @@ snapshots:
   fast-json-stable-stringify@2.1.0: {}
 
   fast-levenshtein@2.0.6: {}
+
+  fast-sha256@1.3.0: {}
 
   fast-uri@3.1.0: {}
 
@@ -16299,6 +16346,14 @@ snapshots:
 
   media-typer@0.3.0: {}
 
+  medusa-payment-paystack@2.1.1(@medusajs/framework@2.18.0(@medusajs/cli@2.18.0(@types/node@20.19.26))(@types/node@20.19.26)(ioredis@5.8.2)(vite@5.4.21(@types/node@20.19.26)(terser@5.44.1))(zod@4.2.0)):
+    dependencies:
+      '@medusajs/framework': 2.18.0(@medusajs/cli@2.18.0(@types/node@20.19.26))(@types/node@20.19.26)(ioredis@5.8.2)(vite@5.4.21(@types/node@20.19.26)(terser@5.44.1))(zod@4.2.0)
+      axios: 1.13.2
+      axios-retry: 4.5.0(axios@1.13.2)
+    transitivePeerDependencies:
+      - debug
+
   merge-descriptors@1.0.3: {}
 
   merge-stream@2.0.0: {}
@@ -16755,6 +16810,8 @@ snapshots:
   pony-cause@2.1.11: {}
 
   possible-typed-array-names@1.1.0: {}
+
+  postal-mime@2.7.5: {}
 
   postcss-import@15.1.0(postcss@8.5.6):
     dependencies:
@@ -17250,6 +17307,11 @@ snapshots:
 
   require-main-filename@2.0.0: {}
 
+  resend@6.19.0:
+    dependencies:
+      postal-mime: 2.7.5
+      standardwebhooks: 1.0.0
+
   resolve-cwd@3.0.0:
     dependencies:
       resolve-from: 5.0.0
@@ -17602,6 +17664,11 @@ snapshots:
       escape-string-regexp: 2.0.0
 
   standard-as-callback@2.1.0: {}
+
+  standardwebhooks@1.0.0:
+    dependencies:
+      '@stablelib/base64': 1.0.1
+      fast-sha256: 1.3.0
 
   statuses@2.0.1: {}
 

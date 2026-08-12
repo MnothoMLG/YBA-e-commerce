@@ -1,5 +1,20 @@
 const path = require("path")
 
+const monochrome = {
+  0: "#FFFFFF",
+  50: "#FFFFFF",
+  100: "#FFFFFF",
+  200: "#000000",
+  300: "#000000",
+  400: "#000000",
+  500: "#000000",
+  600: "#000000",
+  700: "#000000",
+  800: "#000000",
+  900: "#000000",
+  950: "#000000",
+}
+
 module.exports = {
   darkMode: "class",
   presets: [require("@medusajs/ui-preset")],
@@ -20,18 +35,40 @@ module.exports = {
         padding: "padding-top padding-right padding-bottom padding-left",
       },
       colors: {
+        gray: monochrome,
+        zinc: monochrome,
+        neutral: monochrome,
+        slate: monochrome,
+        stone: monochrome,
+        red: monochrome,
+        rose: monochrome,
+        orange: monochrome,
+        amber: monochrome,
+        yellow: monochrome,
+        green: monochrome,
+        emerald: monochrome,
+        blue: monochrome,
+        purple: monochrome,
         grey: {
           0: "#FFFFFF",
-          5: "#F9FAFB",
-          10: "#F3F4F6",
-          20: "#E5E7EB",
-          30: "#D1D5DB",
-          40: "#9CA3AF",
-          50: "#6B7280",
-          60: "#4B5563",
-          70: "#374151",
-          80: "#1F2937",
-          90: "#111827",
+          5: "#FFFFFF",
+          10: "#FFFFFF",
+          20: "#000000",
+          30: "#000000",
+          40: "#000000",
+          50: "#000000",
+          60: "#000000",
+          70: "#000000",
+          80: "#000000",
+          90: "#000000",
+        },
+        yba: {
+          paper: "var(--yba-paper)",
+          paper2: "var(--yba-paper-2)",
+          ink: "var(--yba-ink)",
+          muted: "var(--yba-ink-2)",
+          line: "var(--yba-line)",
+          accent: "var(--yba-accent)",
         },
       },
       borderRadius: {
@@ -59,6 +96,7 @@ module.exports = {
       },
       fontFamily: {
         sans: [
+          "var(--font-sans)",
           "Inter",
           "-apple-system",
           "BlinkMacSystemFont",
@@ -68,6 +106,8 @@ module.exports = {
           "Ubuntu",
           "sans-serif",
         ],
+        display: ["var(--font-display)", "var(--font-sans)", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       keyframes: {
         ring: {

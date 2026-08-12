@@ -19,6 +19,7 @@ export const convertToLocale = ({
     ? new Intl.NumberFormat(locale, {
         style: "currency",
         currency: currency_code,
+        currencyDisplay: "narrowSymbol",
         minimumFractionDigits,
         maximumFractionDigits,
       }).format(amount)

@@ -1,14 +1,17 @@
 import { Metadata } from "next"
 
 import FeaturedProducts from "@modules/home/components/featured-products"
+import ProductGrid from "@modules/home/components/product-grid"
 import Hero from "@modules/home/components/hero"
+import BrandPanels from "@modules/home/components/brand-panels"
 import { listCollections } from "@lib/data/collections"
+import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
+  title: "YBA — Built for the Road",
   description:
-    "A performant frontend ecommerce starter template with Next.js 15 and Medusa.",
+    "YBA. Precision-cut menswear and womenswear essentials. Minimal, considered, made to be worn every day.",
 }
 
 export default async function Home(props: {
@@ -20,22 +23,34 @@ export default async function Home(props: {
 
   const region = await getRegion(countryCode)
 
+  if (!region) {
+    return null
+  }
+
   const { collections } = await listCollections({
     fields: "id, handle, title",
   })
 
-  if (!collections || !region) {
-    return null
-  }
+  const {
+    response: { products },
+  } = await listProducts({
+    regionId: region.id,
+    queryParams: {
+      limit: 8,
+      fields: "*variants.calculated_price,*collection,*categories,*type,+thumbnail,+images",
+    } as any,
+  })
 
   return (
     <>
-      <Hero />
-      <div className="py-12">
-        <ul className="flex flex-col gap-x-6">
-          <FeaturedProducts collections={collections} region={region} />
+      <Hero image={products?.[0]?.thumbnail || products?.[0]?.images?.[0]?.url} />
+      <ProductGrid region={region} products={products || []} />
+      <BrandPanels products={products || []} />
+      {collections?.length ? (
+        <ul className="flex flex-col border-t border-yba-line">
+          <FeaturedProducts collections={collections.slice(0, 1)} region={region} />
         </ul>
-      </div>
+      ) : null}
     </>
   )
 }

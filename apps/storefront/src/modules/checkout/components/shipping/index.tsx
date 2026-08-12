@@ -6,6 +6,8 @@ import { convertToLocale } from "@lib/util/money"
 import { CheckCircleSolid, Loader } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import ErrorMessage from "@modules/checkout/components/error-message"
+import PepStorePicker from "@modules/checkout/components/pep-store-picker"
+import { PepStore } from "@lib/data/pep"
 import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
 import { Button, clx, Heading, Text } from "@modules/common/components/ui"
@@ -62,6 +64,11 @@ const Shipping: React.FC<ShippingProps> = ({
   const [shippingMethodId, setShippingMethodId] = useState<string | null>(
     cart.shipping_methods?.at(-1)?.shipping_option_id || null
   )
+  const [selectedPepStore, setSelectedPepStore] = useState<PepStore | null>(
+    ((cart.metadata as Record<string, unknown> | undefined)?.pep_store as
+      | PepStore
+      | undefined) ?? null
+  )
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -78,6 +85,12 @@ const Shipping: React.FC<ShippingProps> = ({
   )
 
   const hasPickupOptions = !!_pickupMethods?.length
+
+  // PAXI via PEP: when selected, the customer must pick a nearby PEP store
+  const selectedOption = availableShippingMethods?.find(
+    (o) => o.id === shippingMethodId
+  )
+  const isPaxiSelected = /paxi|pep/i.test(selectedOption?.name ?? "")
 
   useEffect(() => {
     setIsLoadingPrices(true)
@@ -296,6 +309,10 @@ const Shipping: React.FC<ShippingProps> = ({
                 </RadioGroup>
               </div>
             </div>
+
+            {isPaxiSelected && (
+              <PepStorePicker cart={cart} onSelect={setSelectedPepStore} />
+            )}
           </div>
 
           {showPickupOptions === PICKUP_OPTION_ON && (
@@ -376,10 +393,15 @@ const Shipping: React.FC<ShippingProps> = ({
               className="mt"
               onClick={handleSubmit}
               isLoading={isLoading}
-              disabled={!cart.shipping_methods?.[0]}
+              disabled={
+                !cart.shipping_methods?.[0] ||
+                (isPaxiSelected && !selectedPepStore)
+              }
               data-testid="submit-delivery-option-button"
             >
-              Continue to payment
+              {isPaxiSelected && !selectedPepStore
+                ? "Select a PEP store to continue"
+                : "Continue to payment"}
             </Button>
           </div>
         </>
@@ -398,6 +420,12 @@ const Shipping: React.FC<ShippingProps> = ({
                     currency_code: cart?.currency_code,
                   })}
                 </Text>
+                {selectedPepStore && (
+                  <Text className="txt-medium text-ui-fg-subtle mt-1">
+                    Collect at: {selectedPepStore.name} —{" "}
+                    {selectedPepStore.address}
+                  </Text>
+                )}
               </div>
             )}
           </div>

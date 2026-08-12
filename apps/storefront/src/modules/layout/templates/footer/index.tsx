@@ -1,157 +1,60 @@
-import { listCategories } from "@lib/data/categories";
-import { listCollections } from "@lib/data/collections";
-import { Text, clx } from "@modules/common/components/ui";
-
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
-import MedusaCTA from "@modules/layout/components/medusa-cta";
+import { listCategories } from "@lib/data/categories"
+import { listCollections } from "@lib/data/collections"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import YbaLogo from "@modules/common/components/yba-logo"
 
 export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  });
-  const productCategories = await listCategories();
+  const [{ collections }, productCategories] = await Promise.all([
+    listCollections({ fields: "id,title,handle" }),
+    listCategories(),
+  ])
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
-            >
-              Medusa Store
-            </LocalizedClientLink>
-          </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return;
-                    }
+    <footer className="bg-black text-white">
+      <section className="grid gap-10 border-b border-white/20 px-6 py-20 small:grid-cols-2 small:px-12 small:py-28">
+        <div>
+          <span className="font-mono text-xs uppercase tracking-[0.28em] text-white/60">&quot;Enlist&quot;</span>
+          <h2 className="mt-4 max-w-2xl font-display text-[clamp(3.5rem,7vw,7rem)] uppercase leading-[0.85]">Join the paddock.</h2>
+          <p className="mt-6 max-w-xl text-lg text-white/60">Early access to drops, campaign previews and paddock stories. No spam.</p>
+        </div>
+        <div className="flex items-center small:justify-end">
+          <LocalizedClientLink href="/account" className="border border-white bg-white px-8 py-5 font-mono text-xs uppercase tracking-[0.25em] text-black transition-colors hover:bg-black hover:text-white">
+            Create an account
+          </LocalizedClientLink>
+        </div>
+      </section>
 
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null;
-
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            )}
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
-                >
-                  {collections?.slice(0, 6).map((c) => (
-                    <li key={c.id}>
-                      <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
-                        href={`/collections/${c.handle}`}
-                      >
-                        {c.title}
-                      </LocalizedClientLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <a
-                    href="https://github.com/medusajs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://docs.medusajs.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/medusajs/dtc-starter"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Source code
-                  </a>
-                </li>
-              </ul>
-            </div>
+      <section className="grid gap-14 border-b border-white/20 px-6 py-16 small:grid-cols-[2fr_1fr_1fr] small:px-12 small:py-24">
+        <div>
+          <YbaLogo className="h-20 w-auto invert" />
+          <p className="mt-10 max-w-lg font-serif text-3xl italic leading-snug">“Made for the originals. The young, cool kings and queens who are not afraid to make a statement.”</p>
+          <div className="mt-10 flex gap-7 font-mono text-xs uppercase tracking-[0.2em] text-white/60">
+            <span>Instagram</span><span>TikTok</span><span>Twitter</span>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
-          </Text>
-          <MedusaCTA />
+        <div>
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Shop</span>
+          <ul className="mt-7 space-y-4 font-mono text-sm uppercase tracking-[0.18em]">
+            <li><LocalizedClientLink href="/store">All pieces</LocalizedClientLink></li>
+            {productCategories?.filter((category) => !category.parent_category).slice(0, 3).map((category) => (
+              <li key={category.id}><LocalizedClientLink href={`/categories/${category.handle}`}>{category.name}</LocalizedClientLink></li>
+            ))}
+          </ul>
         </div>
+        <div>
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Collections</span>
+          <ul className="mt-7 space-y-4 font-mono text-sm uppercase tracking-[0.18em]">
+            {collections?.slice(0, 4).map((collection) => (
+              <li key={collection.id}><LocalizedClientLink href={`/collections/${collection.handle}`}>{collection.title}</LocalizedClientLink></li>
+            ))}
+            <li><LocalizedClientLink href="/account">Account</LocalizedClientLink></li>
+          </ul>
+        </div>
+      </section>
+      <div className="flex flex-col gap-3 px-6 py-7 font-mono text-[10px] uppercase tracking-[0.24em] text-white/60 small:flex-row small:justify-between small:px-12">
+        <span>© {new Date().getFullYear()} Yung Blood Apparel</span>
+        <span>Johannesburg, South Africa</span>
       </div>
     </footer>
-  );
+  )
 }

@@ -32,8 +32,10 @@
     "@medusajs/medusa": "2.18.0",
     "@medusajs/ui": "4.2.0",
     "@tanstack/react-query": "5.64.2",
+    "medusa-payment-paystack": "^2.1.1",
     "react-i18next": "13.5.0",
     "react-router-dom": "6.30.4",
+    "resend": "^6.19.0",
     "zod": "4.2.0"
   },
   "devDependencies": {
