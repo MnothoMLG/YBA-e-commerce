@@ -1,20 +1,34 @@
-import { loadEnv, defineConfig } from '@medusajs/framework/utils'
+import { defineConfig, loadEnv, MedusaError } from "@medusajs/framework/utils";
 
-loadEnv(process.env.NODE_ENV || 'development', process.cwd())
+loadEnv(process.env.NODE_ENV || "development", process.cwd());
 
-// Only register the Paystack provider when a secret key is present, so the
-// backend still boots during setup before keys are added.
-const paymentProviders = process.env.PAYSTACK_SECRET_KEY
+const paystackSecretKey = process.env.PAYSTACK_SECRET_KEY?.trim();
+
+console.log(
+  "PAYSTACK_SECRET_KEY:",
+  paystackSecretKey ? "Configured" : "Not Configured",
+);
+
+if (process.env.NODE_ENV === "production" && !paystackSecretKey) {
+  throw new MedusaError(
+    MedusaError.Types.INVALID_ARGUMENT,
+    "PAYSTACK_SECRET_KEY is required in the production backend environment",
+  );
+}
+
+// Keep local development usable before payment credentials are configured.
+// Production fails above instead of silently starting without Paystack.
+const paymentProviders = paystackSecretKey
   ? [
       {
         resolve: "medusa-payment-paystack",
         id: "paystack",
         options: {
-          secret_key: process.env.PAYSTACK_SECRET_KEY,
+          secret_key: paystackSecretKey,
         },
       },
     ]
-  : []
+  : [];
 
 module.exports = defineConfig({
   projectConfig: {
@@ -25,7 +39,7 @@ module.exports = defineConfig({
       authCors: process.env.AUTH_CORS!,
       jwtSecret: process.env.JWT_SECRET,
       cookieSecret: process.env.COOKIE_SECRET,
-    }
+    },
   },
   modules: [
     {
@@ -35,4 +49,4 @@ module.exports = defineConfig({
       },
     },
   ],
-})
+});

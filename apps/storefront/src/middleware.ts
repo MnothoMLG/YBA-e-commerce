@@ -105,6 +105,26 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Paystack's callback is tied to the cart that initiated payment, so it
+  // must keep the country code in the configured callback URL. Do not prefix
+  // the storefront's detected/default country when that code isn't in the
+  // cached region map. Also repair callback URLs previously prefixed by the
+  // middleware (for example, /dk/za/paystack-callback).
+  const duplicatedPaystackCallback = request.nextUrl.pathname.match(
+    /^\/[a-z]{2}\/([a-z]{2})\/paystack-callback\/?$/i
+  )
+
+  if (duplicatedPaystackCallback) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = `/${duplicatedPaystackCallback[1].toLowerCase()}/paystack-callback`
+
+    return NextResponse.redirect(redirectUrl, 307)
+  }
+
+  if (/^\/[a-z]{2}\/paystack-callback\/?$/i.test(request.nextUrl.pathname)) {
+    return NextResponse.next()
+  }
+
   const cacheIdCookie = request.cookies.get("_medusa_cache_id")
   const cacheId = cacheIdCookie?.value || crypto.randomUUID()
 

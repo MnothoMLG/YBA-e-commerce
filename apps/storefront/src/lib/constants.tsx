@@ -33,7 +33,7 @@ export const paymentInfoMap: Record<
     title: "Manual Payment",
     icon: <CreditCard />,
   },
-  pp_paystack: {
+  pp_paystack_paystack: {
     title: "Paystack (Card, EFT, and more)",
     icon: <CreditCard />,
   },

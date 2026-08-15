@@ -26,6 +26,8 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 
   const paymentSession = cart.payment_collection?.payment_sessions?.[0]
 
+  console.log("PaymentButton: paymentSession", paymentSession)
+
   switch (true) {
     case isStripeLike(paymentSession?.provider_id):
       return (
