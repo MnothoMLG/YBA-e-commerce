@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
-const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "dk"
+const DEFAULT_REGION = "za"
 
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
@@ -75,7 +75,9 @@ async function getCountryCode(
   const urlCountryCode = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
 
   // Cloudflare Workers provides country via request.cf.country
-  const cloudflareCountryCode = (request as { cf?: { country?: string } }).cf?.country?.toLowerCase()
+  const cloudflareCountryCode = (
+    request as { cf?: { country?: string } }
+  ).cf?.country?.toLowerCase()
 
   // Vercel provides x-vercel-ip-country header
   const vercelCountryCode = request.headers
@@ -109,7 +111,7 @@ export async function middleware(request: NextRequest) {
   // must keep the country code in the configured callback URL. Do not prefix
   // the storefront's detected/default country when that code isn't in the
   // cached region map. Also repair callback URLs previously prefixed by the
-  // middleware (for example, /dk/za/paystack-callback).
+  // middleware.
   const duplicatedPaystackCallback = request.nextUrl.pathname.match(
     /^\/[a-z]{2}\/([a-z]{2})\/paystack-callback\/?$/i
   )

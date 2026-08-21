@@ -35,11 +35,14 @@ export async function findPepStores(
       query: { address },
       headers,
     })
-    .catch((e: any) => ({
-      stores: [],
-      message:
-        e?.message ?? "Could not load nearby PEP stores. Please try again.",
-    }))
+    .catch((e: any) => {
+      console.log("Error fetching PEP stores", e)
+      return {
+        stores: [],
+        message:
+          e?.message ?? "Could not load nearby PEP stores. Please try again.",
+      }
+    })
 }
 
 /**
@@ -48,6 +51,8 @@ export async function findPepStores(
  */
 export async function setPepStore(store: PepStore | null) {
   return updateCart({
-    metadata: { pep_store: store ? (store as unknown as Record<string, unknown>) : null },
+    metadata: {
+      pep_store: store ? (store as unknown as Record<string, unknown>) : null,
+    },
   } as any)
 }
