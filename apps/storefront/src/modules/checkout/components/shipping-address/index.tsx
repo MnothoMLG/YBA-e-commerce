@@ -3,9 +3,12 @@ import { Container } from "@modules/common/components/ui"
 import Checkbox from "@modules/common/components/checkbox"
 import Input from "@modules/common/components/input"
 import { mapKeys } from "lodash"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import AddressSelect from "../address-select"
 import CountrySelect from "../country-select"
+import GooglePlaceAddressInput, {
+  GooglePlaceAddress,
+} from "../google-place-address"
 
 const ShippingAddress = ({
   customer,
@@ -29,6 +32,15 @@ const ShippingAddress = ({
     "shipping_address.province": cart?.shipping_address?.province || "",
     "shipping_address.phone": cart?.shipping_address?.phone || "",
     email: cart?.email || "",
+  })
+  const savedLocation = (cart?.metadata as Record<string, unknown> | undefined)
+    ?.shipping_location as
+    | { place_id?: string; lat?: number; lng?: number }
+    | undefined
+  const [placeLocation, setPlaceLocation] = useState({
+    placeId: savedLocation?.place_id ?? "",
+    lat: savedLocation?.lat?.toString() ?? "",
+    lng: savedLocation?.lng?.toString() ?? "",
   })
 
   const countriesInRegion = useMemo(
@@ -88,11 +100,30 @@ const ShippingAddress = ({
       HTMLInputElement | HTMLInputElement | HTMLSelectElement
     >
   ) => {
+    if (e.target.name.startsWith("shipping_address.")) {
+      setPlaceLocation({ placeId: "", lat: "", lng: "" })
+    }
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
   }
+
+  const handleGooglePlace = useCallback((address: GooglePlaceAddress) => {
+    setFormData((current) => ({
+      ...current,
+      "shipping_address.address_1": address.address1,
+      "shipping_address.city": address.city,
+      "shipping_address.province": address.province,
+      "shipping_address.postal_code": address.postalCode,
+      "shipping_address.country_code": address.countryCode,
+    }))
+    setPlaceLocation({
+      placeId: address.placeId,
+      lat: address.lat.toString(),
+      lng: address.lng.toString(),
+    })
+  }, [])
 
   return (
     <>
@@ -108,11 +139,22 @@ const ShippingAddress = ({
                 key.replace("shipping_address.", "")
               ) as unknown as HttpTypes.StoreCartAddress
             }
-            onSelect={setFormAddress}
+            onSelect={(address, email) => {
+              setPlaceLocation({ placeId: "", lat: "", lng: "" })
+              setFormAddress(address, email)
+            }}
           />
         </Container>
       )}
       <div className="grid grid-cols-2 gap-4">
+        <GooglePlaceAddressInput onSelect={handleGooglePlace} />
+        <input
+          type="hidden"
+          name="shipping_place_id"
+          value={placeLocation.placeId}
+        />
+        <input type="hidden" name="shipping_lat" value={placeLocation.lat} />
+        <input type="hidden" name="shipping_lng" value={placeLocation.lng} />
         <Input
           label="First name"
           name="shipping_address.first_name"

@@ -1,7 +1,5 @@
 "use server"
 
-import { sdk } from "@lib/config"
-import { getAuthHeaders } from "./cookies"
 import { updateCart } from "./cart"
 
 export type PepStore = {
@@ -10,39 +8,6 @@ export type PepStore = {
   place_id: string
   location: { lat: number; lng: number }
   distance_km: number
-}
-
-type PepStoresResponse = {
-  stores: PepStore[]
-  count?: number
-  message?: string
-  formatted_address?: string
-  radius_km?: number
-}
-
-/**
- * Calls the backend PEP store finder (Google Geocoding + Places) for stores
- * within 30km of the given free-text address.
- */
-export async function findPepStores(
-  address: string
-): Promise<PepStoresResponse> {
-  const headers = { ...(await getAuthHeaders()) }
-
-  return sdk.client
-    .fetch<PepStoresResponse>("/store/pep-stores", {
-      method: "GET",
-      query: { address },
-      headers,
-    })
-    .catch((e: any) => {
-      console.log("Error fetching PEP stores", e)
-      return {
-        stores: [],
-        message:
-          e?.message ?? "Could not load nearby PEP stores. Please try again.",
-      }
-    })
 }
 
 /**

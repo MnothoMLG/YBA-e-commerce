@@ -3,17 +3,11 @@
 import { Radio, RadioGroup } from "@headlessui/react"
 import { Loader } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { findPepStores, setPepStore, PepStore } from "@lib/data/pep"
+import { setPepStore, PepStore } from "@lib/data/pep"
+import { findNearbyPepStores } from "@lib/google-places-client"
 import MedusaRadio from "@modules/common/components/radio"
 import { clx, Text } from "@modules/common/components/ui"
 import { useEffect, useState } from "react"
-
-function buildAddress(a?: HttpTypes.StoreCartAddress | null): string {
-  if (!a) return ""
-  return [a.address_1, a.address_2, a.city, a.province, a.postal_code, "South Africa"]
-    .filter(Boolean)
-    .join(", ")
-}
 
 type Props = {
   cart: HttpTypes.StoreCart
@@ -33,7 +27,14 @@ const PepStorePicker: React.FC<Props> = ({ cart, onSelect }) => {
     initial?.place_id ?? null
   )
 
-  const address = buildAddress(cart.shipping_address)
+  const shippingLocation = (
+    cart.metadata as Record<string, unknown> | undefined
+  )?.shipping_location as { lat?: number; lng?: number } | undefined
+  const preciseLocation =
+    typeof shippingLocation?.lat === "number" &&
+    typeof shippingLocation?.lng === "number"
+      ? { lat: shippingLocation.lat, lng: shippingLocation.lng }
+      : null
 
   // Report any pre-existing selection upward on mount
   useEffect(() => {
@@ -42,23 +43,19 @@ const PepStorePicker: React.FC<Props> = ({ cart, onSelect }) => {
   }, [])
 
   useEffect(() => {
-    if (!address) {
-      setError("Add your delivery address above to find nearby PEP stores.")
+    if (!preciseLocation) {
+      setError("Select your address from the Google suggestions first.")
       return
     }
     let cancelled = false
     setLoading(true)
     setError(null)
-    findPepStores(address)
-      .then((res) => {
+    findNearbyPepStores(preciseLocation)
+      .then((list) => {
         if (cancelled) return
-        const list = res.stores ?? []
         setStores(list)
         if (!list.length) {
-          setError(
-            res.message ??
-              "No PEP stores found within 30km of your address."
-          )
+          setError("No PEP stores found within 30km of your address.")
         }
       })
       .catch((e) => {
@@ -70,7 +67,7 @@ const PepStorePicker: React.FC<Props> = ({ cart, onSelect }) => {
     return () => {
       cancelled = true
     }
-  }, [address])
+  }, [preciseLocation?.lat, preciseLocation?.lng])
 
   const choose = async (store: PepStore) => {
     setSelectedId(store.place_id)

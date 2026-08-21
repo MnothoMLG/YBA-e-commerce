@@ -4,7 +4,6 @@ import { isManual, isPaystack, isStripeLike } from "@lib/constants"
 import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
-import PaystackPop from "@paystack/inline-js"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
@@ -73,7 +72,7 @@ const PaystackPaymentButton = ({
   const accessCode = (session?.data as Record<string, unknown>)
     ?.paystackTxAccessCode as string | undefined
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!accessCode) {
       setErrorMessage(
         "Could not start the Paystack payment. Go back and re-select Paystack."
@@ -84,22 +83,32 @@ const PaystackPaymentButton = ({
     setSubmitting(true)
     setErrorMessage(null)
 
-    const paystack = new PaystackPop()
-    paystack.resumeTransaction(accessCode, {
-      onSuccess: async () => {
-        await placeOrder().catch((error) => {
+    try {
+      const { default: PaystackPop } = await import("@paystack/inline-js")
+      const paystack = new PaystackPop()
+      paystack.resumeTransaction(accessCode, {
+        onSuccess: async () => {
+          await placeOrder().catch((error) => {
+            setErrorMessage(error.message)
+            setSubmitting(false)
+          })
+        },
+        onCancel: () => {
+          setSubmitting(false)
+        },
+        onError: (error) => {
           setErrorMessage(error.message)
           setSubmitting(false)
-        })
-      },
-      onCancel: () => {
-        setSubmitting(false)
-      },
-      onError: (error) => {
-        setErrorMessage(error.message)
-        setSubmitting(false)
-      },
-    })
+        },
+      })
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Could not load Paystack. Please try again."
+      )
+      setSubmitting(false)
+    }
   }
 
   return (
