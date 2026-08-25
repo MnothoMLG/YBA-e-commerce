@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
 const PUBLISHABLE_API_KEY = process.env.NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY
-const DEFAULT_REGION = process.env.NEXT_PUBLIC_DEFAULT_REGION || "dk"
+const DEFAULT_REGION = "za"
 
 const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
@@ -75,7 +75,9 @@ async function getCountryCode(
   const urlCountryCode = request.nextUrl.pathname.split("/")[1]?.toLowerCase()
 
   // Cloudflare Workers provides country via request.cf.country
-  const cloudflareCountryCode = (request as { cf?: { country?: string } }).cf?.country?.toLowerCase()
+  const cloudflareCountryCode = (
+    request as { cf?: { country?: string } }
+  ).cf?.country?.toLowerCase()
 
   // Vercel provides x-vercel-ip-country header
   const vercelCountryCode = request.headers
@@ -102,6 +104,26 @@ async function getCountryCode(
  */
 export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.includes(".")) {
+    return NextResponse.next()
+  }
+
+  // Paystack's callback is tied to the cart that initiated payment, so it
+  // must keep the country code in the configured callback URL. Do not prefix
+  // the storefront's detected/default country when that code isn't in the
+  // cached region map. Also repair callback URLs previously prefixed by the
+  // middleware.
+  const duplicatedPaystackCallback = request.nextUrl.pathname.match(
+    /^\/[a-z]{2}\/([a-z]{2})\/paystack-callback\/?$/i
+  )
+
+  if (duplicatedPaystackCallback) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = `/${duplicatedPaystackCallback[1].toLowerCase()}/paystack-callback`
+
+    return NextResponse.redirect(redirectUrl, 307)
+  }
+
+  if (/^\/[a-z]{2}\/paystack-callback\/?$/i.test(request.nextUrl.pathname)) {
     return NextResponse.next()
   }
 

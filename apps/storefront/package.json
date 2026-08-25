@@ -2,8 +2,8 @@
   "name": "@dtc/storefront",
   "version": "1.0.3",
   "private": true,
-  "author": "Kasper Fabricius Kristensen <kasper@medusajs.com> & Victor Gerbrands <victor@medusajs.com> (https://www.medusajs.com)",
-  "description": "Next.js Starter to be used with Medusa V2",
+  "author": "Mnotho Gumede <mnotho.mlg@gmail.com>",
+  "description": "YBA Storefront",
   "keywords": [
     "medusa-storefront"
   ],
@@ -19,6 +19,7 @@
     "@medusajs/icons": "2.18.0",
     "@medusajs/js-sdk": "2.18.0",
     "@medusajs/ui-preset": "2.18.0",
+    "@paystack/inline-js": "2.24.0",
     "@radix-ui/react-accordion": "^1.2.3",
     "@stripe/react-stripe-js": "^5.3.0",
     "@stripe/stripe-js": "^8.2.0",
@@ -30,6 +31,7 @@
     "react": "19.0.5",
     "react-country-flag": "^3.1.0",
     "react-dom": "19.0.5",
+    "react-paystack": "^6.0.0",
     "server-only": "^0.0.1",
     "tailwindcss-radix": "^2.8.0"
   },

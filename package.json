@@ -1,5 +1,5 @@
 {
-  "name": "my-medusa-store",
+  "name": "yba-store",
   "private": false,
   "packageManager": "pnpm@10.21.0",
   "engines": {

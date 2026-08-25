@@ -24,7 +24,9 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
     !cart.email ||
     (cart.shipping_methods?.length ?? 0) < 1
 
-  const paymentSession = cart.payment_collection?.payment_sessions?.[0]
+  const paymentSession = cart.payment_collection?.payment_sessions?.find(
+    (session) => session.status === "pending"
+  )
 
   switch (true) {
     case isStripeLike(paymentSession?.provider_id):
@@ -67,33 +69,58 @@ const PaystackPaymentButton = ({
   const session = cart.payment_collection?.payment_sessions?.find(
     (s) => s.status === "pending"
   )
-  const authorizationUrl = (session?.data as Record<string, unknown>)
-    ?.paystackTxAuthorizationUrl as string | undefined
+  const accessCode = (session?.data as Record<string, unknown>)
+    ?.paystackTxAccessCode as string | undefined
 
-  const handlePayment = () => {
-    if (!authorizationUrl) {
+  const handlePayment = async () => {
+    if (!accessCode) {
       setErrorMessage(
         "Could not start the Paystack payment. Go back and re-select Paystack."
       )
       return
     }
+
     setSubmitting(true)
-    // Redirect to Paystack's hosted checkout. After payment, Paystack returns
-    // the customer to the callback URL configured in the Paystack dashboard,
-    // where the order is completed (payment is verified server-side).
-    window.location.href = authorizationUrl
+    setErrorMessage(null)
+
+    try {
+      const { default: PaystackPop } = await import("@paystack/inline-js")
+      const paystack = new PaystackPop()
+      paystack.resumeTransaction(accessCode, {
+        onSuccess: async () => {
+          await placeOrder().catch((error) => {
+            setErrorMessage(error.message)
+            setSubmitting(false)
+          })
+        },
+        onCancel: () => {
+          setSubmitting(false)
+        },
+        onError: (error) => {
+          setErrorMessage(error.message)
+          setSubmitting(false)
+        },
+      })
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : "Could not load Paystack. Please try again."
+      )
+      setSubmitting(false)
+    }
   }
 
   return (
     <>
       <Button
-        disabled={notReady || !authorizationUrl}
+        disabled={notReady || !accessCode}
         isLoading={submitting}
         onClick={handlePayment}
         size="large"
         data-testid={dataTestId}
       >
-        Pay with Paystack
+        Continue to Payment
       </Button>
       <ErrorMessage
         error={errorMessage}
