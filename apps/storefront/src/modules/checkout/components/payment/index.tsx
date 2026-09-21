@@ -27,7 +27,11 @@ const Payment = ({
   availablePaymentMethods: { id: string }[]
 }) => {
   const activeSession = cart.payment_collection?.payment_sessions?.find(
-    (paymentSession) => paymentSession.status === "pending"
+    (paymentSession) =>
+      paymentSession.status === "pending" &&
+      availablePaymentMethods.some(
+        (method) => method.id === paymentSession.provider_id
+      )
   )
 
   const [isLoading, setIsLoading] = useState(false)

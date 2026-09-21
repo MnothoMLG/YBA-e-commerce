@@ -52,6 +52,14 @@ const Shipping: React.FC<ShippingProps> = ({
   cart,
   availableShippingMethods,
 }) => {
+  const cartShippingMethodId =
+    cart.shipping_methods?.at(-1)?.shipping_option_id ?? null
+  const initialShippingMethodId = availableShippingMethods?.some(
+    (method) => method.id === cartShippingMethodId
+  )
+    ? cartShippingMethodId
+    : null
+
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingPrices, setIsLoadingPrices] = useState(true)
 
@@ -62,7 +70,7 @@ const Shipping: React.FC<ShippingProps> = ({
   >({})
   const [error, setError] = useState<string | null>(null)
   const [shippingMethodId, setShippingMethodId] = useState<string | null>(
-    cart.shipping_methods?.at(-1)?.shipping_option_id || null
+    initialShippingMethodId
   )
   const [selectedPepStore, setSelectedPepStore] = useState<PepStore | null>(
     ((cart.metadata as Record<string, unknown> | undefined)?.pep_store as
@@ -394,7 +402,7 @@ const Shipping: React.FC<ShippingProps> = ({
               onClick={handleSubmit}
               isLoading={isLoading}
               disabled={
-                !cart.shipping_methods?.[0] ||
+                !shippingMethodId ||
                 (isPaxiSelected && !selectedPepStore)
               }
               data-testid="submit-delivery-option-button"

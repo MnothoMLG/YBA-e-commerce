@@ -42,8 +42,10 @@ export default async function Footer() {
           </ul>
         </div>
         <div>
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Collections</span>
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/50">Navigate</span>
           <ul className="mt-7 space-y-4 font-mono text-sm uppercase tracking-[0.18em]">
+            <li><LocalizedClientLink href="/stories">Stories</LocalizedClientLink></li>
+            <li><LocalizedClientLink href="/manifesto">Manifesto</LocalizedClientLink></li>
             {collections?.slice(0, 4).map((collection) => (
               <li key={collection.id}><LocalizedClientLink href={`/collections/${collection.handle}`}>{collection.title}</LocalizedClientLink></li>
             ))}
