@@ -14,11 +14,11 @@ export default async function Footer() {
       <section className="grid gap-10 border-b border-white/20 px-6 py-20 small:grid-cols-2 small:px-12 small:py-28">
         <div>
           <span className="font-mono text-xs uppercase tracking-[0.28em] text-white/60">&quot;Enlist&quot;</span>
-          <h2 className="mt-4 max-w-2xl font-display text-[clamp(3.5rem,7vw,7rem)] uppercase leading-[0.85]">Join the paddock.</h2>
+          <h2 className="mt-4 max-w-2xl font-display text-[clamp(3rem,13vw,7rem)] uppercase leading-[0.87]">Join the paddock.</h2>
           <p className="mt-6 max-w-xl text-lg text-white/60">Early access to drops, campaign previews and paddock stories. No spam.</p>
         </div>
         <div className="flex items-center small:justify-end">
-          <LocalizedClientLink href="/account" className="border border-white bg-white px-8 py-5 font-mono text-xs uppercase tracking-[0.25em] text-black transition-colors hover:bg-black hover:text-white">
+          <LocalizedClientLink href="/account" className="w-full border border-white bg-white px-6 py-5 text-center font-mono text-xs uppercase tracking-[0.2em] text-black transition-colors hover:bg-black hover:text-white xsmall:w-auto xsmall:px-8 xsmall:tracking-[0.25em]">
             Create an account
           </LocalizedClientLink>
         </div>
@@ -28,7 +28,7 @@ export default async function Footer() {
         <div>
           <YbaLogo className="h-20 w-auto invert" />
           <p className="mt-10 max-w-lg font-serif text-3xl italic leading-snug">“Made for the originals. The young, cool kings and queens who are not afraid to make a statement.”</p>
-          <div className="mt-10 flex gap-7 font-mono text-xs uppercase tracking-[0.2em] text-white/60">
+          <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 font-mono text-xs uppercase tracking-[0.2em] text-white/60">
             <span>Instagram</span><span>TikTok</span><span>Twitter</span>
           </div>
         </div>

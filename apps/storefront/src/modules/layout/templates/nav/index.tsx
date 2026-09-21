@@ -15,7 +15,7 @@ const shopLinks = [
   { label: "Men", href: "/categories/men" },
   { label: "Kids", href: "/categories/kids" },
   { label: "Collection", href: "/store" },
-  { label: "Lookbook", href: "/store" },
+  { label: "Lookbook", href: "/lookbook" },
 ]
 
 const editorialLinks = [
@@ -60,17 +60,17 @@ export default async function Nav({
 
   return (
     <div className="sticky inset-x-0 top-0 z-50">
-      <header className="h-24 border-b border-black bg-yba-paper small:h-28">
-        <nav className="grid h-full grid-cols-[1fr_auto_1fr] items-center px-5 small:px-8 medium:px-12">
+      <header className="h-20 border-b border-black bg-yba-paper small:h-24 medium:h-28">
+        <nav className="grid h-full grid-cols-[1fr_auto_1fr] items-center px-4 xsmall:px-5 small:px-8 medium:px-12">
           <div className="flex h-full items-center">
-            <div className="small:hidden">
+            <div className="medium:hidden">
               <SideMenu
                 regions={regions}
                 locales={locales}
                 currentLocale={currentLocale}
               />
             </div>
-            <div className="hidden items-center gap-7 small:flex medium:gap-8 large:gap-10">
+            <div className="hidden items-center gap-8 medium:flex large:gap-10">
               {shopLinks.map((link) => (
                 <NavLink key={link.label} {...link} />
               ))}
@@ -83,11 +83,11 @@ export default async function Nav({
             className="transition-opacity hover:opacity-65"
             aria-label="YBA home"
           >
-            <YbaLogo className="h-14 w-auto small:h-[4.5rem]" priority />
+            <YbaLogo className="h-12 w-auto small:h-14 medium:h-[4.5rem]" priority />
           </LocalizedClientLink>
 
           <div className="flex h-full items-center justify-end gap-4 small:gap-5 medium:gap-7">
-            <div className="hidden items-center gap-7 small:flex medium:gap-8">
+            <div className="hidden items-center gap-8 medium:flex">
               {editorialLinks.map((link) => (
                 <NavLink key={link.label} {...link} />
               ))}
@@ -95,11 +95,11 @@ export default async function Nav({
             <LocalizedClientLink
               href="/store"
               aria-label="Search products"
-              className="hidden transition-opacity hover:opacity-60 xsmall:block"
+              className="hidden transition-opacity hover:opacity-60 small:block"
             >
               <MagnifyingGlass className="h-5 w-5" />
             </LocalizedClientLink>
-            <span className="yba-eyebrow hidden medium:inline">{currency}</span>
+            <span className="yba-eyebrow hidden large:inline">{currency}</span>
             <Suspense
               fallback={
                 <LocalizedClientLink

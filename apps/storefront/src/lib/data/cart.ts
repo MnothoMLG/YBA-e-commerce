@@ -157,6 +157,50 @@ export async function addToCart({
     .catch(medusaError)
 }
 
+export async function addItemsToCart({
+  items,
+  countryCode,
+}: {
+  items: { variantId: string; quantity?: number }[]
+  countryCode: string
+}) {
+  const validItems = items.filter((item) => item.variantId)
+
+  if (!validItems.length) {
+    throw new Error("Select a variant for every product in the look")
+  }
+
+  const cart = await getOrSetCart(countryCode)
+
+  if (!cart) {
+    throw new Error("Error retrieving or creating cart")
+  }
+
+  const headers = {
+    ...(await getAuthHeaders()),
+  }
+
+  for (const item of validItems) {
+    await sdk.store.cart
+      .createLineItem(
+        cart.id,
+        {
+          variant_id: item.variantId,
+          quantity: item.quantity ?? 1,
+        },
+        {},
+        headers
+      )
+      .catch(medusaError)
+  }
+
+  const cartCacheTag = await getCacheTag("carts")
+  revalidateTag(cartCacheTag)
+
+  const fulfillmentCacheTag = await getCacheTag("fulfillment")
+  revalidateTag(fulfillmentCacheTag)
+}
+
 export async function updateLineItem({
   lineId,
   quantity,
@@ -359,6 +403,18 @@ export async function setAddresses(currentState: unknown, formData: FormData) {
       },
       email: formData.get("email"),
       metadata: {
+        pep_store: null,
+        delivery_destination: {
+          type: "shipping_address",
+          address: {
+            address_1: formData.get("shipping_address.address_1"),
+            address_2: "",
+            postal_code: formData.get("shipping_address.postal_code"),
+            city: formData.get("shipping_address.city"),
+            country_code: formData.get("shipping_address.country_code"),
+            province: formData.get("shipping_address.province"),
+          },
+        },
         shipping_location:
           formData.get("shipping_place_id") &&
           formData.get("shipping_lat") &&

@@ -7,7 +7,7 @@ import { CheckCircleSolid, Loader } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import PepStorePicker from "@modules/checkout/components/pep-store-picker"
-import { PepStore } from "@lib/data/pep"
+import { PepStore, setShippingAddressDestination } from "@lib/data/pep"
 import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
 import { Button, clx, Heading, Text } from "@modules/common/components/ui"
@@ -158,6 +158,26 @@ const Shipping: React.FC<ShippingProps> = ({
     })
 
     await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
+      .then(async () => {
+        const option = availableShippingMethods?.find(
+          (method) => method.id === id
+        )
+
+        if (!/paxi|pep/i.test(option?.name ?? "") && cart.shipping_address) {
+          await setShippingAddressDestination({
+            type: "shipping_address",
+            address: {
+              address_1: cart.shipping_address.address_1,
+              address_2: cart.shipping_address.address_2,
+              city: cart.shipping_address.city,
+              province: cart.shipping_address.province,
+              postal_code: cart.shipping_address.postal_code,
+              country_code: cart.shipping_address.country_code,
+            },
+          })
+          setSelectedPepStore(null)
+        }
+      })
       .catch((err) => {
         setShippingMethodId(currentId)
 
