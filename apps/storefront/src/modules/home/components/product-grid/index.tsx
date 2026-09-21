@@ -19,12 +19,12 @@ export default async function ProductGrid({
   }
 
   return (
-    <section className="border-b border-yba-line px-5 py-16 small:px-12 small:py-28">
+    <section className="border-b border-yba-line px-4 py-14 xsmall:px-5 small:px-12 small:py-28">
       {/* Section header — editorial */}
       <div className="mb-12 small:mb-16">
         <span className="yba-eyebrow">&quot;{eyebrow}&quot;</span>
         <div className="mt-3 flex items-end justify-between gap-x-6">
-          <h2 className="yba-display max-w-5xl text-[clamp(3rem,7vw,7.5rem)]">{title}</h2>
+          <h2 className="yba-display max-w-5xl text-[clamp(2.5rem,12vw,7.5rem)]">{title}</h2>
           <LocalizedClientLink
             href="/store"
             className="group hidden xsmall:inline-flex items-center gap-x-2 whitespace-nowrap pb-2"
@@ -37,7 +37,7 @@ export default async function ProductGrid({
         </div>
       </div>
 
-      <ul className="grid grid-cols-2 gap-x-3 gap-y-12 small:grid-cols-4 small:gap-x-10 small:gap-y-16">
+      <ul className="grid grid-cols-2 gap-x-2 gap-y-10 xsmall:gap-x-3 small:grid-cols-4 small:gap-x-10 small:gap-y-16">
         {products.slice(0, 4).map((product) => (
           <li key={product.id}>
             <ProductPreview product={product} region={region} isFeatured />

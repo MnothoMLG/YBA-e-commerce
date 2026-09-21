@@ -35,23 +35,23 @@ export const metadata: Metadata = {
 export default function StoriesPage() {
   return (
     <div className="bg-yba-paper">
-      <header className="yba-page-shell border-b border-black pb-16 pt-24 small:pb-24 small:pt-28">
+      <header className="yba-page-shell border-b border-black pb-12 pt-16 small:pb-24 small:pt-28">
         <p className="yba-eyebrow">&quot;Editorial&quot;</p>
-        <h1 className="yba-display mt-7 text-[clamp(4.5rem,12vw,12rem)]">
+        <h1 className="yba-display mt-5 text-[clamp(3.5rem,18vw,12rem)] small:mt-7">
           Stories
         </h1>
       </header>
 
-      <main className="yba-page-shell pb-24">
+      <main className="yba-page-shell pb-16 small:pb-24">
         <ol>
           {stories.map((story, index) => (
             <li key={story.title}>
-              <article className="group grid min-h-44 grid-cols-1 gap-6 border-b border-black/25 py-10 transition-colors hover:bg-black hover:text-white small:grid-cols-[14rem_1fr_auto] small:items-center small:px-0 small:py-12 small:hover:px-6">
+              <article className="group grid grid-cols-1 gap-4 border-b border-black/25 py-8 transition-colors hover:bg-black hover:text-white small:min-h-44 small:grid-cols-[14rem_1fr_auto] small:items-center small:gap-6 small:py-12 small:hover:px-6">
                 <p className="font-mono text-[11px] uppercase tracking-[0.25em] opacity-60">
                   &quot;{story.type}&quot;
                 </p>
                 <h2 className="max-w-5xl font-display text-3xl uppercase leading-[0.95] tracking-[-0.025em] xsmall:text-4xl medium:text-5xl">
-                  <span className="mr-3 font-mono text-xs font-normal opacity-0 transition-opacity group-hover:opacity-60">
+                  <span className="mr-2 font-mono text-xs font-normal opacity-40 transition-opacity small:mr-3 small:opacity-0 small:group-hover:opacity-60">
                     0{index + 1}
                   </span>
                   {story.title}

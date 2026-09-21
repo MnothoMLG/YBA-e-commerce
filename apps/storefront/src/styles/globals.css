@@ -23,6 +23,7 @@
     color: var(--yba-ink);
     font-family: var(--font-sans), "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
     text-rendering: optimizeLegibility;
   }
   a, button {
@@ -50,6 +51,7 @@
     font-family: var(--font-display), var(--font-sans), sans-serif;
     @apply uppercase tracking-[-0.02em] leading-[0.92];
     color: var(--yba-ink);
+    overflow-wrap: break-word;
   }
   .yba-page-shell {
     @apply mx-auto w-full max-w-[1920px] px-5 small:px-12;

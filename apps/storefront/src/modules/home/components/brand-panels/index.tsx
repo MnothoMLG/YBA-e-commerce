@@ -17,9 +17,9 @@ export default function BrandPanels({
 
   return (
     <>
-      <section className="border-b border-yba-line px-5 py-16 small:px-12 small:py-28">
+      <section className="border-b border-yba-line px-4 py-14 xsmall:px-5 small:px-12 small:py-28">
         <span className="yba-eyebrow">&quot;Featured collections&quot;</span>
-        <h2 className="yba-display mt-5 text-[clamp(3rem,7vw,7rem)]">
+        <h2 className="yba-display mt-5 text-[clamp(2.5rem,12vw,7rem)]">
           Enter the archive
         </h2>
         <div className="mt-12 grid gap-4 small:grid-cols-3">
@@ -55,7 +55,7 @@ export default function BrandPanels({
         <div className="flex items-end justify-between gap-8 px-5 small:px-12">
           <div>
             <span className="yba-eyebrow">&quot;Campaign journal&quot;</span>
-            <h2 className="yba-display mt-5 text-[clamp(3rem,7vw,7rem)]">
+            <h2 className="yba-display mt-5 text-[clamp(2.5rem,12vw,7rem)]">
               Scenes from the city
             </h2>
           </div>
@@ -133,7 +133,7 @@ export default function BrandPanels({
             &quot;After dark — Johannesburg&quot;
           </span>
           <div className="max-w-6xl">
-            <h2 className="font-display text-[clamp(3.5rem,9vw,9rem)] uppercase leading-[0.82]">
+            <h2 className="font-display text-[clamp(3rem,14vw,9rem)] uppercase leading-[0.84]">
               Luxury with a pulse.
             </h2>
             <LocalizedClientLink
@@ -151,7 +151,7 @@ export default function BrandPanels({
           <span className="font-mono text-xs uppercase tracking-[0.26em] text-white/60">
             &quot;Made for the originals&quot;
           </span>
-          <h2 className="font-display text-[clamp(4rem,9vw,9rem)] uppercase leading-[0.82]">
+          <h2 className="my-20 font-display text-[clamp(3rem,14vw,9rem)] uppercase leading-[0.84] small:my-0">
             Not just clothes. A lifestyle.
           </h2>
         </div>
