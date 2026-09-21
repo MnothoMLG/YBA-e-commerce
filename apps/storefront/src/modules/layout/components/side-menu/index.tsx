@@ -24,6 +24,8 @@ import { Locale } from "@lib/data/locales"
 const sideMenuItems = [
   { name: "Home", href: "/", icon: House },
   { name: "Store", href: "/store", icon: ShoppingBag },
+  { name: "Stories", href: "/stories", icon: ArrowRightMini },
+  { name: "Manifesto", href: "/manifesto", icon: ArrowRightMini },
   { name: "Account", href: "/account", icon: User },
   { name: "Cart", href: "/cart", icon: ShoppingCart },
 ]
